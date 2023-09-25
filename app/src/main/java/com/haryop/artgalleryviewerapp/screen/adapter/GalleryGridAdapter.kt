@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.haryop.artgalleryviewerapp.R
 import com.haryop.artgalleryviewerapp.data.model.ArtworkItemModel
@@ -19,15 +17,15 @@ class GalleryGridAdapter(
     private var layoutInflater: LayoutInflater? = null
     private lateinit var itemImageView: ImageView
 
-    private lateinit var artworksList: List<ArtworkItemModel>
-    var artworks: List<ArtworkItemModel>
+    private var artworksList: ArrayList<ArtworkItemModel> = ArrayList()
+    var artworks: ArrayList<ArtworkItemModel>
         get() = artworksList
         set(value) {
             artworksList = value
         }
 
     override fun getCount(): Int {
-        return artworks?.size ?: 0
+        return artworks.size
     }
 
     override fun getItem(position: Int): Any? {
@@ -51,9 +49,14 @@ class GalleryGridAdapter(
         }
 
         itemImageView = convertViewResult!!.findViewById(R.id.imageViewGridGaleryItem)
-        Glide.with(context).load(artworks?.get(position)?.imagePath).centerCrop()
+        Glide.with(context).load(getImagePath(artworks[position].imageId)).centerCrop()
             .into(itemImageView)
 
         return convertViewResult
     }
+
+    private fun getImagePath(imageId:String):String{
+        return "https://www.artic.edu/iiif/2/$imageId/full/200,/0/default.jpg"
+    }
+
 }

@@ -4,10 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.Observer
+import com.haryop.artgalleryviewerapp.data.helper.Resource
 import com.haryop.artgalleryviewerapp.databinding.ActivityMainBinding
 import com.haryop.artgalleryviewerapp.screen.adapter.GalleryGridAdapter
-import com.haryop.artgalleryviewerapp.data.model.ArtworkItemModel
 import com.haryop.artgalleryviewerapp.screen.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,17 +25,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(view)
 
         viewModel.init()
-
-
-        viewModel.getIsLoading().observe(this, Observer<Boolean>() {
-            if (it) {
-                binding.progressBar.visibility = View.VISIBLE
-            } else {
-                binding.progressBar.visibility = View.GONE
-                showData()
-            }
-        })
-
+        initGalleryGridView()
+        showData()
     }
 
     private fun initGalleryGridView() {
@@ -45,11 +35,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showData() {
-        initGalleryGridView()
-        viewModel.getArtworks().observe(this, Observer<List<ArtworkItemModel>>() {
-            galleryAdapter.artworks = it
-            galleryAdapter.notifyDataSetChanged()
-        })
+        viewModel.getArtworkResponse.observe(this) {
+            when (it.status) {
+                Resource.Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                Resource.Status.SUCCESS -> {
+                    galleryAdapter.artworks = it.data?.data ?: ArrayList()
+                    galleryAdapter.notifyDataSetChanged()
+                    binding.progressBar.visibility = View.GONE
+                }
+
+                Resource.Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
     }
 
 

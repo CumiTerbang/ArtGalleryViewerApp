@@ -21,6 +21,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
@@ -32,6 +33,7 @@ android {
             )
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -80,8 +82,14 @@ dependencies {
     // Coroutine Lifecycle Scopes
     val coroutineLifecycleVersion = "2.5.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$coroutineLifecycleVersion")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$coroutineLifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$coroutineLifecycleVersion")
     implementation("androidx.activity:activity-ktx:1.2.2")
+
+    //Timber
+    val timberVersion = "4.7.1"
+    implementation ("com.jakewharton.timber:timber:$timberVersion")
+
 }
 
 kapt {

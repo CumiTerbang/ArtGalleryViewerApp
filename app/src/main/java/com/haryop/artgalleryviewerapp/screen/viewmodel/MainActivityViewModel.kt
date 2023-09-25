@@ -1,59 +1,34 @@
 package com.haryop.artgalleryviewerapp.screen.viewmodel
 
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.haryop.artgalleryviewerapp.data.model.ArtworkItemModel
-import com.haryop.artgalleryviewerapp.data.model.ArtworkPaginationModel
-import com.haryop.artgalleryviewerapp.data.repo.RemoteArtworksRepo
+import androidx.lifecycle.switchMap
+import com.haryop.artgalleryviewerapp.data.helper.Resource
+import com.haryop.artgalleryviewerapp.data.model.ArtworkResponseModel
+import com.haryop.artgalleryviewerapp.data.repo.DataRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel
 @Inject
-constructor(private val remoteArtworksRepo: RemoteArtworksRepo) : ViewModel() {
+constructor(private val dataRepo: DataRepo) : ViewModel() {
 
-    //::VARIABLES::
-    private var isLoading: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    private val artworks = MutableLiveData<List<ArtworkItemModel>>()
-    private val pagination = MutableLiveData<ArtworkPaginationModel>()
-
-    //::GETTERS & SETTERS::
-    fun getIsLoading(): LiveData<Boolean> {
-        return isLoading
+    //VARIABLES
+    private val _page = MutableLiveData<String>()
+    private val _getArtworkResponse = _page.switchMap { source ->
+        dataRepo.getArtworks(source)
     }
+    val getArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _getArtworkResponse
 
-    fun getArtworks(): LiveData<List<ArtworkItemModel>> {
-        return artworks
-    }
+    //GETTERS & SETTERS
 
-    //::PUBLIC FUNCTION::
+    //PUBLIC FUNCTION
     fun init() {
-        isLoading.value = true
-        getArtworkFromServices()
+        _page.value = "1"
     }
 
-    //::PRIVATE FUNCTION::
-    private fun getArtworkFromServices()=viewModelScope.launch {
-        remoteArtworksRepo.getArtworks("1").let { response ->
-            if(response.isSuccessful){
-                var result = response.body() ?: return@launch
-
-                artworks.postValue(result.data)
-                pagination.postValue(result.pagination)
-
-            }else{
-                Log.d("tag", "getAllTvShows Error: ${response.code()}")
-            }
-
-            isLoading.value = false
-        }
-    }
+    //PRIVATE FUNCTION
 
 }
