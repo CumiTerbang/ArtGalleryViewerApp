@@ -25,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-//        initViewModel()
         viewModel.init()
 
 
@@ -39,14 +38,6 @@ class MainActivity : AppCompatActivity() {
         })
 
     }
-
-//    private fun initViewModel() {
-//        viewModel = ViewModelProvider(
-//            this,
-//            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-//        )[MainActivityViewModel::class.java]
-//        viewModel.init()
-//    }
 
     private fun initGalleryGridView() {
         galleryAdapter = GalleryGridAdapter(viewModel.getArtworks().value, this)
