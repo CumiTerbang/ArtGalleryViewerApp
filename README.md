@@ -26,6 +26,6 @@ this is my approach for Telkomsel's Use Case Test Challange by making an android
 
 ## Code Design & Structure
 This project is using MVVM design pattern. The project directory consist of  directories:
-1. **data**: The M (Model) in MVVM. Where we perform data operations and dependency injection with the help of [Hilt](https://dagger.dev/hilt/) v2.46
-3. **screen**: User Interface directory for Activities and ViewModels helping to display data to the user.
+1. **data**: Directory for The M (Model) in MVVM. Where we perform data operations and dependency injection with the help of [Hilt](https://dagger.dev/hilt/) v2.46
+3. **screen**: Directory for The V (View) and VM (ViewModel) in MVVM. User Interface directory for Activities and ViewModels helping to display data to the user.
 4. **utils**: Urilities directory for helper classes and functions.
