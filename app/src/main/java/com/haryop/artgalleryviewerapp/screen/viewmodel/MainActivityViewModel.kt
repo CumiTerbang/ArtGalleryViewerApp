@@ -23,8 +23,8 @@ constructor(private val dataRepo: DataRepo) : ViewModel() {
     }
     val getArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _getArtworkResponse
 
-    private val _searchArtworkResponse = _keyword.switchMap { source ->
-        dataRepo.searchArtworks(source, "1")
+    private val _searchArtworkResponse = _keyword.switchMap { keyword ->
+        dataRepo.searchArtworks(keyword, _page.value ?: "1")
     }
     val searchArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _searchArtworkResponse
 
@@ -32,8 +32,13 @@ constructor(private val dataRepo: DataRepo) : ViewModel() {
         _page.value = "1"
     }
 
-    fun search(keyword:String) {
+    fun search(keyword: String) {
         _keyword.value = keyword
+        _page.value = "1"
+    }
+
+    fun setPage(page: String) {
+        _page.value = page
     }
 
 
