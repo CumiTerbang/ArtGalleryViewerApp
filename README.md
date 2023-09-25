@@ -1,5 +1,7 @@
 # Art Gallery Viewer App
 
+<img src="https://github.com/CumiTerbang/ArtGalleryViewerApp/blob/master/readme_assets/screenshot_1.jpg" width="200" height="355,56"> <img src="https://github.com/CumiTerbang/HaryoMusicPlayer/blob/master/readme_assets/screenshot_2.jpg" width="200" height="355,56"> <img src="https://github.com/CumiTerbang/HaryoMusicPlayer/blob/master/readme_assets/screenshot_3.jpg" width="200" height="355,56">
+
 an android app demo to view artwork from various artist using API from  [Art Institute of Chicago API](https://api.artic.edu/docs/)
 
 this is my approach for Telkomsel's Use Case Test Challange by making an android application based on the requirement as the solution
