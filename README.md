@@ -1,6 +1,6 @@
 # Art Gallery Viewer App
 
-<img src="https://github.com/CumiTerbang/ArtGalleryViewerApp/blob/main/readmme_asstes/screenshot_1.png" width="200" height="355,56">
+<img src="https://github.com/CumiTerbang/ArtGalleryViewerApp/blob/main/readme_asstes/screenshot_1.png" width="200" height="355,56">
 
 an android app demo to view artwork from various artist using API from  [Art Institute of Chicago API](https://api.artic.edu/docs/)
 
