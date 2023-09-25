@@ -67,11 +67,9 @@ dependencies {
 
     //dagger-hilt
     val daggerVersion = "2.46"
-    val hiltLifecycleVersion = "1.0.0-alpha03"
     val hiltAndrordXCompilerVersion = "1.0.0-beta01"
     implementation("com.google.dagger:hilt-android:$daggerVersion")
     kapt("com.google.dagger:hilt-android-compiler:$daggerVersion")
-    implementation("androidx.hilt:hilt-lifecycle-viewmodel:$hiltLifecycleVersion")
     kapt("androidx.hilt:hilt-compiler:$hiltAndrordXCompilerVersion")
 
     //coroutines
@@ -80,8 +78,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
     // Coroutine Lifecycle Scopes
-    val coroutineLifecycleVersion = "2.3.1"
+    val coroutineLifecycleVersion = "2.5.1"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$coroutineLifecycleVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$coroutineLifecycleVersion")
     implementation("androidx.activity:activity-ktx:1.2.2")
+}
+
+kapt {
+    correctErrorTypes = true
 }

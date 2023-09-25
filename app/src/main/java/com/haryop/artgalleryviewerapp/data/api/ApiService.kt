@@ -8,7 +8,7 @@ import retrofit2.http.Query
 
 interface ApiService {
 
-    @GET("${Constants.PAGINATION_LIMIT}&${Constants.GET_ARTWORKS}")
+    @GET("artworks?${Constants.PAGINATION_LIMIT}&${Constants.GET_ARTWORKS}")
     suspend fun getArtworks(
         @Query("page") page: String?
     ): Response<ArtworkResponseModel>
