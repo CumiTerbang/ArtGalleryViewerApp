@@ -1,1 +1,1 @@
-# ArtworkGalleryViewerApp
+# ArtGalleryViewerApp
