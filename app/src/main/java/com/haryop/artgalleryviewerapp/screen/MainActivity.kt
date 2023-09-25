@@ -1,7 +1,8 @@
-package com.haryop.artgalleryviewerapp
+package com.haryop.artgalleryviewerapp.screen
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.haryop.artgalleryviewerapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
