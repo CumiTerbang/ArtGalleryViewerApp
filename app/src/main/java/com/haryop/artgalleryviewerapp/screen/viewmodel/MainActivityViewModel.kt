@@ -37,7 +37,6 @@ constructor(private val remoteArtworksRepo: RemoteArtworksRepo) : ViewModel() {
     fun init() {
         isLoading.value = true
         getArtworkFromServices()
-        isLoading.value = false
     }
 
     //::PRIVATE FUNCTION::
@@ -52,6 +51,8 @@ constructor(private val remoteArtworksRepo: RemoteArtworksRepo) : ViewModel() {
             }else{
                 Log.d("tag", "getAllTvShows Error: ${response.code()}")
             }
+
+            isLoading.value = false
         }
     }
 

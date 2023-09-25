@@ -40,13 +40,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initGalleryGridView() {
-        galleryAdapter = GalleryGridAdapter(viewModel.getArtworks().value, this)
+        galleryAdapter = GalleryGridAdapter(this)
         binding.gridViewGallery.adapter = galleryAdapter
     }
 
     private fun showData() {
         initGalleryGridView()
         viewModel.getArtworks().observe(this, Observer<List<ArtworkItemModel>>() {
+            galleryAdapter.artworks = it
             galleryAdapter.notifyDataSetChanged()
         })
     }
