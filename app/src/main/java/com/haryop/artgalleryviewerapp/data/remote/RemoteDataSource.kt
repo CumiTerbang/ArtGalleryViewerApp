@@ -7,5 +7,7 @@ class RemoteDataSource @Inject constructor(
 ) : BaseDataSource() {
 
     suspend fun getArtworks(page: String) = getResult { apiServices.getArtworks(page) }
+    suspend fun searchArtworks(keyword: String, page: String) =
+        getResult { apiServices.searchArtworks(keyword, page) }
 
 }

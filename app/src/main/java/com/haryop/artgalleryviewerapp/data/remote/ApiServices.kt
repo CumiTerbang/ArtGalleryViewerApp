@@ -12,4 +12,10 @@ interface ApiServices {
     suspend fun getArtworks(
         @Query("page") page: String?
     ): Response<ArtworkResponseModel>
+
+    @GET("artworks/search?${Constants.PAGINATION_LIMIT}&${Constants.GET_ARTWORKS}")
+    suspend fun searchArtworks(
+        @Query("q") keyword: String?,
+        @Query("page") page: String?,
+    ): Response<ArtworkResponseModel>
 }

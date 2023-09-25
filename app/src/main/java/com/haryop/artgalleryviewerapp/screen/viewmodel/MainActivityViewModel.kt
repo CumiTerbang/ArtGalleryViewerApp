@@ -15,20 +15,26 @@ class MainActivityViewModel
 @Inject
 constructor(private val dataRepo: DataRepo) : ViewModel() {
 
-    //VARIABLES
     private val _page = MutableLiveData<String>()
+    private val _keyword = MutableLiveData<String>()
+
     private val _getArtworkResponse = _page.switchMap { source ->
         dataRepo.getArtworks(source)
     }
     val getArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _getArtworkResponse
 
-    //GETTERS & SETTERS
+    private val _searchArtworkResponse = _keyword.switchMap { source ->
+        dataRepo.searchArtworks(source, "1")
+    }
+    val searchArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _searchArtworkResponse
 
-    //PUBLIC FUNCTION
     fun init() {
         _page.value = "1"
     }
 
-    //PRIVATE FUNCTION
+    fun search(keyword:String) {
+        _keyword.value = keyword
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.haryop.artgalleryviewerapp.screen
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.SearchView
 import androidx.activity.viewModels
 import com.haryop.artgalleryviewerapp.data.helper.Resource
 import com.haryop.artgalleryviewerapp.databinding.ActivityMainBinding
@@ -26,7 +27,34 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.init()
         initGalleryGridView()
-        showData()
+        showArtworks()
+
+        binding.searchViewSearchArt.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                if(p0.isNullOrEmpty()){
+                    viewModel.init()
+                    showArtworks()
+                    return false
+                }
+                viewModel.search(p0)
+                showSearchResult()
+                return false
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                if(p0.isNullOrEmpty()){
+                    viewModel.init()
+                    showArtworks()
+                    return false
+                }
+                viewModel.search(p0)
+                showSearchResult()
+                return false
+            }
+
+        })
+
     }
 
     private fun initGalleryGridView() {
@@ -34,8 +62,27 @@ class MainActivity : AppCompatActivity() {
         binding.gridViewGallery.adapter = galleryAdapter
     }
 
-    private fun showData() {
+    private fun showArtworks() {
         viewModel.getArtworkResponse.observe(this) {
+            when (it.status) {
+                Resource.Status.LOADING -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+
+                Resource.Status.SUCCESS -> {
+                    galleryAdapter.artworks = it.data?.data ?: ArrayList()
+                    galleryAdapter.notifyDataSetChanged()
+                    binding.progressBar.visibility = View.GONE
+                }
+
+                Resource.Status.ERROR -> {
+                    binding.progressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+    private fun showSearchResult() {
+        viewModel.searchArtworkResponse.observe(this) {
             when (it.status) {
                 Resource.Status.LOADING -> {
                     binding.progressBar.visibility = View.VISIBLE

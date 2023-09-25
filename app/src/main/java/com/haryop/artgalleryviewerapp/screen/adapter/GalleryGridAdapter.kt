@@ -29,7 +29,7 @@ class GalleryGridAdapter(
     }
 
     override fun getItem(position: Int): Any? {
-        return null
+        return artworks[position]
     }
 
     override fun getItemId(position: Int): Long {
