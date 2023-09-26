@@ -52,6 +52,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
     //Glide
     val glideVersion = "4.16.0"
     implementation("com.github.bumptech.glide:glide:$glideVersion")
@@ -93,6 +94,10 @@ dependencies {
     //Shimmering
     val shimmeringVersion ="0.5.0"
     implementation("com.facebook.shimmer:shimmer:$shimmeringVersion")
+
+    //Splashscreen
+    val splashscreenVersion = "1.0.1"
+    implementation("androidx.core:core-splashscreen:$splashscreenVersion")
 
 }
 
