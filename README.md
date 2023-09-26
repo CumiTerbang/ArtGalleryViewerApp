@@ -8,7 +8,7 @@ this is my approach for Telkomsel's Use Case Test Challange by making an android
 
 ## Features
 1. view artwork from various artist using API from  [Art Institute of Chicago API](https://api.artic.edu/docs/)
-2. Search artwork by title from [Art Institute of Chicago API](https://api.artic.edu/docs/)
+2. Search artwork by keyword from [Art Institute of Chicago API](https://api.artic.edu/docs/)
 
 ## Supported Device
 - Android device with minimum API 24 **(Nougat)**
