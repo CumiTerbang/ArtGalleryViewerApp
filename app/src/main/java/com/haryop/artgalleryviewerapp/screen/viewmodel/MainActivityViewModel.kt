@@ -18,8 +18,8 @@ constructor(private val dataRepo: DataRepo) : ViewModel() {
     private val _page = MutableLiveData<String>()
     private val _keyword = MutableLiveData<String>()
 
-    private val _getArtworkResponse = _page.switchMap { source ->
-        dataRepo.getArtworks(source)
+    private val _getArtworkResponse = _page.switchMap { page ->
+        dataRepo.getArtworks(page)
     }
     val getArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _getArtworkResponse
 

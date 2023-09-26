@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.facebook.shimmer.Shimmer
+import com.facebook.shimmer.ShimmerDrawable
 import com.google.android.material.snackbar.Snackbar
 import com.haryop.artgalleryviewerapp.data.model.ArtworkItemModel
 import com.haryop.artgalleryviewerapp.databinding.ItemGridGalleryBinding
@@ -20,7 +22,7 @@ class GalleryGridAdapter(
             artworksList = value
         }
 
-    fun addArtworks(artworks: ArrayList<ArtworkItemModel>){
+    fun addArtworks(artworks: ArrayList<ArtworkItemModel>) {
         artworksList.addAll(artworks)
     }
 
@@ -41,6 +43,7 @@ class GalleryGridAdapter(
         with(holder) {
             with(artworks[position]) {
                 Glide.with(context).load(getImagePath(this.imageId))
+                    .placeholder(getShimmerPlaceHolder())
                     .centerCrop()
                     .into(binding.imageViewGridGaleryItem)
 
@@ -60,35 +63,19 @@ class GalleryGridAdapter(
         return "https://www.artic.edu/iiif/2/$imageId/full/200,/0/default.jpg"
     }
 
-//    override fun getCount(): Int {
-//        return artworks.size
-//    }
-//
-//    override fun getItem(position: Int): Any? {
-//        return artworks[position]
-//    }
-//
-//    override fun getItemId(position: Int): Long {
-//        return 0
-//    }
-//
-//    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-//        if (count == 0) return convertView
-//        var convertViewResult = convertView
-//        if (layoutInflater == null) {
-//            layoutInflater =
-//                context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-//        }
-//
-//        if (convertViewResult == null) {
-//            convertViewResult = layoutInflater!!.inflate(R.layout.item_grid_gallery, null)
-//        }
-//
-//        itemImageView = convertViewResult!!.findViewById(R.id.imageViewGridGaleryItem)
-//        Glide.with(context).load(getImagePath(artworks[position].imageId)).centerCrop()
-//            .into(itemImageView)
-//
-//        return convertViewResult
-//    }
+    private fun getShimmerPlaceHolder(): ShimmerDrawable {
+        val shimmer =
+            Shimmer.AlphaHighlightBuilder()// The attributes for a ShimmerDrawable is set by this builder
+                .setDuration(1800) // how long the shimmering animation takes to do one full sweep
+                .setBaseAlpha(0.7f) //the alpha of the underlying children
+                .setHighlightAlpha(0.6f) // the shimmer alpha amount
+                .setDirection(Shimmer.Direction.LEFT_TO_RIGHT)
+                .setAutoStart(true)
+                .build()
+
+        return ShimmerDrawable().apply {
+            setShimmer(shimmer)
+        }
+    }
 
 }

@@ -90,6 +90,10 @@ dependencies {
     val timberVersion = "4.7.1"
     implementation ("com.jakewharton.timber:timber:$timberVersion")
 
+    //Shimmering
+    val shimmeringVersion ="0.5.0"
+    implementation("com.facebook.shimmer:shimmer:$shimmeringVersion")
+
 }
 
 kapt {

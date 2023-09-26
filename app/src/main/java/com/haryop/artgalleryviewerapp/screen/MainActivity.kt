@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.haryop.artgalleryviewerapp.data.helper.Resource
+import com.haryop.artgalleryviewerapp.data.model.ArtworkItemModel
 import com.haryop.artgalleryviewerapp.databinding.ActivityMainBinding
 import com.haryop.artgalleryviewerapp.screen.adapter.GalleryGridAdapter
 import com.haryop.artgalleryviewerapp.screen.viewmodel.MainActivityViewModel
@@ -21,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var galleryAdapter: GalleryGridAdapter
+    private var searchKeyword: String = ""
+    private var artworks: ArrayList<ArtworkItemModel> = ArrayList()
 
     private val viewModel: MainActivityViewModel by viewModels()
 
@@ -30,19 +33,21 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel.init()
         initSearchView()
         initGalleryGridView()
+
+        viewModel.init()
         showArtworks()
     }
 
-    private fun initSearchView(){
+    private fun initSearchView() {
         binding.searchViewSearchArt.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
+                searchKeyword = p0 ?: ""
                 if (p0.isNullOrEmpty()) {
                     viewModel.init()
-                    showArtworks()
+//                    showArtworks()
                     return false
                 }
                 viewModel.search(p0)
@@ -51,9 +56,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
+                searchKeyword = p0 ?: ""
                 if (p0.isNullOrEmpty()) {
                     viewModel.init()
-                    showArtworks()
+//                    showArtworks()
                     return false
                 }
                 viewModel.search(p0)
@@ -80,18 +86,16 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     val nextPage = currentPage + 1
 
-//                    val snackbar = Snackbar.make(
-//                        binding.root, "" +
-//                                "page = $currentPage | " +
-//                                "itemsCount=$currentItemsCount | " +
-//                                "nextPage = $nextPage",
-//                        Snackbar.LENGTH_LONG
-//                    ).setAction("Action", null)
-//                    snackbar.show()
+                    val snackbar = Snackbar.make(
+                        binding.root, "" +
+                                "page = $currentPage | " +
+                                "itemsCount=$currentItemsCount | " +
+                                "nextPage = $nextPage",
+                        Snackbar.LENGTH_LONG
+                    ).setAction("Action", null)
+                    snackbar.show()
 
                     viewModel.setPage(nextPage.toString())
-                    showArtworks()
-
                 }
             })
         }
@@ -107,12 +111,16 @@ class MainActivity : AppCompatActivity() {
                 Resource.Status.SUCCESS -> {
                     val newData = it.data?.data ?: ArrayList()
                     val pagination = it.data?.pagination
-                    if (pagination == null || pagination.currentPage == 1){
-                        galleryAdapter.artworks = newData
-                    }else{
-                        galleryAdapter.addArtworks(newData)
+
+                    if (pagination == null || pagination.currentPage == 1) {
+                        artworks.clear()
+                        artworks = ArrayList()
                     }
+
+                    artworks.addAll(newData)
+                    galleryAdapter.artworks = artworks
                     galleryAdapter.notifyDataSetChanged()
+
                     binding.progressBar.visibility = View.GONE
                 }
 
@@ -131,8 +139,14 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 Resource.Status.SUCCESS -> {
-                    galleryAdapter.artworks = it.data?.data ?: ArrayList()
+                    val newData = it.data?.data ?: ArrayList()
+                    artworks.clear()
+                    artworks = ArrayList()
+                    artworks.addAll(newData)
+
+                    galleryAdapter.artworks = artworks
                     galleryAdapter.notifyDataSetChanged()
+
                     binding.progressBar.visibility = View.GONE
                 }
 
