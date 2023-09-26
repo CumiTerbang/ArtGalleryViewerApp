@@ -2,5 +2,7 @@
 <resources>
 
     <dimen name="grid_spacing">2dp</dimen>
+    <dimen name="spacing12">12dp</dimen>
+    <dimen name="spacing24">24dp</dimen>
 
 </resources>

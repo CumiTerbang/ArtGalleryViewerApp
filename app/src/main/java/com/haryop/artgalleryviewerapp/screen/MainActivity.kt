@@ -1,5 +1,6 @@
 package com.haryop.artgalleryviewerapp.screen
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.haryop.artgalleryviewerapp.data.helper.Resource
 import com.haryop.artgalleryviewerapp.data.model.ArtworkItemModel
 import com.haryop.artgalleryviewerapp.data.model.ArtworkPaginationModel
@@ -87,10 +89,17 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun initGalleryGridView() {
+        val layoutManager = GridLayoutManager(baseContext, 3)
+
         galleryAdapter = GalleryGridAdapter(this)
+        galleryAdapter.onItemClick = {
+            val intent = Intent(this@MainActivity, DetailArtworkScreenActivity::class.java)
+            intent.putExtra("artworkItemModel", Gson().toJson(it))
+            startActivity(intent)
+        }
+
         with(binding.gridViewGallery) {
             this.adapter = galleryAdapter
-            val layoutManager = GridLayoutManager(baseContext, 3)
             this.layoutManager = layoutManager
             this.addItemDecoration(GridSpacingItemDecoration(3, 4, true))
             this.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {

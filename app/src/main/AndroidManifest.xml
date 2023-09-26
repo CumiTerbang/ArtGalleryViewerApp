@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
-    <!--        android:theme="@style/Theme.ArtGalleryViewerApp"-->
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -26,6 +25,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".screen.DetailArtworkScreenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ArtGalleryViewerApp"/>
+
     </application>
 
 </manifest>
