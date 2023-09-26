@@ -16,15 +16,15 @@ class MainActivityViewModel
 constructor(private val dataRepo: DataRepo) : ViewModel() {
 
     private val _page = MutableLiveData<String>()
-    private val _keyword = MutableLiveData<String>()
+    private val _searchMap = MutableLiveData<Map<String, String>>()
 
     private val _getArtworkResponse = _page.switchMap { page ->
         dataRepo.getArtworks(page)
     }
     val getArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _getArtworkResponse
 
-    private val _searchArtworkResponse = _keyword.switchMap { keyword ->
-        dataRepo.searchArtworks(keyword, _page.value ?: "1")
+    private val _searchArtworkResponse = _searchMap.switchMap { map ->
+        dataRepo.searchArtworks(map["keyword"] ?: "", map["page"] ?: "")
     }
     val searchArtworkResponse: LiveData<Resource<ArtworkResponseModel>> = _searchArtworkResponse
 
@@ -32,9 +32,8 @@ constructor(private val dataRepo: DataRepo) : ViewModel() {
         _page.value = "1"
     }
 
-    fun search(keyword: String) {
-        _keyword.value = keyword
-        _page.value = "1"
+    fun search(keyword: String, page: String) {
+        _searchMap.value = mapOf("keyword" to keyword, "page" to page)
     }
 
     fun setPage(page: String) {

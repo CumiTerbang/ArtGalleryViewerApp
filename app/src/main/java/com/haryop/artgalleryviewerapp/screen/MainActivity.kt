@@ -7,7 +7,6 @@ import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.haryop.artgalleryviewerapp.data.helper.Resource
 import com.haryop.artgalleryviewerapp.data.model.ArtworkItemModel
 import com.haryop.artgalleryviewerapp.databinding.ActivityMainBinding
@@ -37,7 +36,9 @@ class MainActivity : AppCompatActivity() {
         initGalleryGridView()
 
         viewModel.init()
-        showArtworks()
+
+        observeArtworks()
+        observeSearchResult()
     }
 
     private fun initSearchView() {
@@ -45,25 +46,33 @@ class MainActivity : AppCompatActivity() {
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 searchKeyword = p0 ?: ""
+                artworks.clear()
+                artworks = ArrayList()
+                galleryAdapter.artworks = artworks
+                galleryAdapter.notifyDataSetChanged()
+
                 if (p0.isNullOrEmpty()) {
                     viewModel.init()
-//                    showArtworks()
                     return false
                 }
-                viewModel.search(p0)
-                showSearchResult()
+
+                viewModel.search(p0, "1")
                 return false
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
                 searchKeyword = p0 ?: ""
+                artworks.clear()
+                artworks = ArrayList()
+                galleryAdapter.artworks = artworks
+                galleryAdapter.notifyDataSetChanged()
+
                 if (p0.isNullOrEmpty()) {
                     viewModel.init()
-//                    showArtworks()
                     return false
                 }
-                viewModel.search(p0)
-                showSearchResult()
+
+                viewModel.search(p0, "1")
                 return false
             }
 
@@ -86,22 +95,17 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     val nextPage = currentPage + 1
 
-                    val snackbar = Snackbar.make(
-                        binding.root, "" +
-                                "page = $currentPage | " +
-                                "itemsCount=$currentItemsCount | " +
-                                "nextPage = $nextPage",
-                        Snackbar.LENGTH_LONG
-                    ).setAction("Action", null)
-                    snackbar.show()
-
-                    viewModel.setPage(nextPage.toString())
+                    if (searchKeyword.isNullOrEmpty()) {
+                        viewModel.setPage(nextPage.toString())
+                    } else {
+                        viewModel.search(searchKeyword, nextPage.toString())
+                    }
                 }
             })
         }
     }
 
-    private fun showArtworks() {
+    private fun observeArtworks() {
         viewModel.getArtworkResponse.observe(this) {
             when (it.status) {
                 Resource.Status.LOADING -> {
@@ -131,7 +135,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSearchResult() {
+    private fun observeSearchResult() {
         viewModel.searchArtworkResponse.observe(this) {
             when (it.status) {
                 Resource.Status.LOADING -> {
@@ -140,8 +144,13 @@ class MainActivity : AppCompatActivity() {
 
                 Resource.Status.SUCCESS -> {
                     val newData = it.data?.data ?: ArrayList()
-                    artworks.clear()
-                    artworks = ArrayList()
+                    val pagination = it.data?.pagination
+
+                    if (pagination == null || pagination.currentPage == 1) {
+                        artworks.clear()
+                        artworks = ArrayList()
+                    }
+
                     artworks.addAll(newData)
 
                     galleryAdapter.artworks = artworks
